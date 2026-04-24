@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#9f2f25">
+  <meta name="color-scheme" content="light">
+  <link rel="preconnect" href="https://api.mrwang.com" crossorigin>
+  <title>肖女士万年历</title>
+  <style>
+    :root{
+      --bg:#f6ead7;--paper:#fffaf1;--paper2:#fff6e8;--card:rgba(255,250,241,.88);--text:#241812;--muted:#7a6454;--muted2:#a5907e;--line:rgba(111,70,42,.17);
+      --brand:#a53428;--brand2:#d58535;--good:#167a4d;--bad:#c44539;--blue:#2f5f9f;--gold:#a16a1a;--shadow:0 18px 50px rgba(91,55,28,.12);--radius:24px;
+    }
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;color:var(--text);font-family:ui-serif,"Noto Serif SC","Source Han Serif SC","Songti SC","STSong",SimSun,Georgia,serif;background:radial-gradient(circle at 8% 0,rgba(213,133,53,.22),transparent 28%),radial-gradient(circle at 92% 3%,rgba(165,52,40,.15),transparent 32%),linear-gradient(135deg,#fbf1e2,#f4e4cf 56%,#fff8ec)}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(117,72,38,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(117,72,38,.055) 1px,transparent 1px);background-size:36px 36px;mask-image:linear-gradient(#000,transparent 82%);opacity:.62}
+    button,input,select{font:inherit}button{cursor:pointer}.wrap{position:relative;width:min(1480px,calc(100% - 32px));margin:0 auto;padding:24px 0 56px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}.brand{display:flex;align-items:center;gap:13px}.seal{width:52px;height:52px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff9ef;box-shadow:0 14px 34px rgba(165,52,40,.24);font-weight:900;letter-spacing:.1em}.brand h1{margin:0;font-size:clamp(25px,3vw,39px);letter-spacing:.06em}.brand p{margin:4px 0 0;color:var(--muted);font-size:14px}.toolbar,.btns,.chips,.tabs{display:flex;flex-wrap:wrap;align-items:center;gap:10px}.btn{border:1px solid var(--line);border-radius:999px;background:rgba(255,250,242,.78);color:var(--text);padding:10px 14px;min-height:40px;display:inline-flex;align-items:center;justify-content:center;gap:7px;box-shadow:0 9px 24px rgba(89,53,27,.06);transition:transform .16s,box-shadow .16s,background .16s}.btn:hover{transform:translateY(-1px);background:#fffaf2;box-shadow:0 13px 30px rgba(89,53,27,.1)}.btn.primary{border-color:transparent;color:#fff;background:linear-gradient(135deg,var(--brand),var(--brand2))}.btn.small{padding:7px 10px;min-height:32px;font-size:13px}.btn.active{background:rgba(165,52,40,.08);border-color:rgba(165,52,40,.34);color:var(--brand)}
+    .dateCtl{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:7px;border:1px solid var(--line);border-radius:999px;background:rgba(255,250,242,.78);box-shadow:0 9px 24px rgba(89,53,27,.05)}input,select{border:1px solid var(--line);outline:none;border-radius:999px;background:rgba(255,255,255,.75);color:var(--text);padding:10px 12px}input:focus,select:focus{border-color:rgba(165,52,40,.48);box-shadow:0 0 0 4px rgba(165,52,40,.08)}input[type=date]{min-width:158px;border:0;background:transparent;padding-left:12px}.layout{display:grid;grid-template-columns:minmax(460px,1.02fr) minmax(0,1.38fr);gap:18px;align-items:start}.left{position:sticky;top:16px;display:grid;gap:18px}.right{display:grid;gap:18px}.card{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);backdrop-filter:blur(14px);box-shadow:var(--shadow);overflow:hidden}.cardHead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:18px 18px 0}.cardHead h2,.cardHead h3{margin:0}.cardHead h2{font-size:24px}.cardHead h3{font-size:21px}.sub{margin:5px 0 0;color:var(--muted);font-size:13px;line-height:1.55}.cardBody{padding:18px}.hero{position:relative;overflow:hidden;border-radius:32px;padding:clamp(22px,4vw,38px);background:linear-gradient(120deg,rgba(255,250,241,.98),rgba(255,247,234,.86));border:1px solid var(--line);box-shadow:var(--shadow)}.hero:after{content:attr(data-mark);position:absolute;right:-14px;top:-4px;font-size:clamp(112px,17vw,240px);font-weight:900;line-height:.9;color:rgba(165,52,40,.07);pointer-events:none}.hero>*{position:relative;z-index:1}.heroTop{display:flex;align-items:center;justify-content:space-between;gap:12px}.status{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.5);padding:8px 12px;color:var(--muted);font-size:13px}.status.ok{color:var(--good);border-color:rgba(22,122,77,.24);background:rgba(22,122,77,.08)}.status.err{color:var(--bad);border-color:rgba(196,69,57,.25);background:rgba(196,69,57,.08)}.heroDay{margin:16px 0 6px;font-size:clamp(70px,11vw,132px);line-height:.85;letter-spacing:-.08em}.heroTitle{font-size:clamp(18px,2.4vw,29px);line-height:1.3;color:var(--muted);margin:0 0 18px}.chip,.tag{display:inline-flex;align-items:center;max-width:100%;gap:5px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.52);padding:7px 10px;color:var(--muted);font-size:13px;line-height:1.2}.good{color:var(--good)!important;border-color:rgba(22,122,77,.24)!important;background:rgba(22,122,77,.08)!important}.bad{color:var(--bad)!important;border-color:rgba(196,69,57,.24)!important;background:rgba(196,69,57,.08)!important}.blue{color:var(--blue)!important;border-color:rgba(47,95,159,.24)!important;background:rgba(47,95,159,.08)!important}.gold{color:var(--gold)!important;border-color:rgba(161,106,26,.24)!important;background:rgba(161,106,26,.08)!important}.empty{color:var(--muted2);font-size:14px}.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}.stat{min-height:78px;border:1px solid var(--line);border-radius:18px;padding:13px;background:rgba(255,255,255,.42)}.stat b{display:block;color:var(--muted);font-size:12px;font-weight:500;margin-bottom:8px}.stat span{font-weight:900;font-size:17px;word-break:break-word}.calendarTop{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}.monthTitle{font-size:24px;font-weight:900}.calendar{border:1px solid var(--line);border-radius:22px;overflow:hidden;background:rgba(255,255,255,.32);box-shadow:inset 0 1px 0 rgba(255,255,255,.58)}.week,.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}.week span{padding:11px 4px;text-align:center;color:var(--muted);font-size:12px;background:rgba(165,52,40,.055);border-right:1px solid var(--line)}.week span:last-child{border-right:0}.day{appearance:none;border:0;border-top:1px solid var(--line);border-right:1px solid var(--line);background:rgba(255,255,255,.24);padding:10px;min-height:106px;text-align:left;color:var(--text);display:flex;flex-direction:column;gap:5px;transition:background .15s,box-shadow .15s,transform .15s}.day:nth-child(7n){border-right:0}.day:hover{background:#fffaf2;transform:translateY(-1px)}.day.off{opacity:.46}.day.sel{background:rgba(165,52,40,.09);box-shadow:inset 0 0 0 2px rgba(165,52,40,.42)}.day.now .num{color:var(--brand)}.dTop{display:flex;align-items:flex-start;justify-content:space-between;gap:6px}.num{font-size:21px;font-weight:900;line-height:1}.today{font-size:10px;border-radius:999px;padding:2px 6px;background:var(--brand);color:#fff}.lunar{min-height:16px;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.gan{font-size:11px;color:var(--muted2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.marks{display:flex;flex-wrap:wrap;gap:4px;margin-top:auto;max-height:43px;overflow:hidden}.mark{font-size:10px;max-width:100%;padding:3px 5px;border-radius:999px;background:rgba(161,106,26,.1);color:var(--gold);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mark.term{color:var(--blue);background:rgba(47,95,159,.1)}.mark.festival{color:var(--good);background:rgba(22,122,77,.1)}.mark.bad{color:var(--bad);background:rgba(196,69,57,.1)}.infoGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.info{display:grid;grid-template-columns:98px 1fr;gap:10px;align-items:start;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.42);padding:11px 12px}.info b{font-weight:500;color:var(--muted)}.info span{font-weight:800;word-break:break-word}.panelGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.mini{border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.38);padding:14px}.mini h4{margin:0 0 10px;font-size:17px}.tags{display:flex;flex-wrap:wrap;gap:8px}.nodes{display:grid;gap:10px}.node{display:grid;grid-template-columns:92px 1fr;gap:10px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.4);padding:11px 12px}.node b{color:var(--muted);font-weight:500}.node span{font-weight:800}.tableWrap{overflow:auto;border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.32)}table{border-collapse:collapse;width:100%;min-width:890px}th,td{padding:12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:14px}th{color:var(--muted);font-weight:600;background:rgba(165,52,40,.055)}tr:last-child td{border-bottom:0}tr.active{background:rgba(165,52,40,.08)}.hourCell{font-weight:900}.small{font-size:12px;color:var(--muted);margin-top:3px}.hourDetail{margin-top:14px}.historyTools{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.historyTools input{min-width:230px;border-radius:16px}.historyTools select{width:112px;border-radius:16px}.historyList{display:grid;gap:10px}.hist{display:grid;grid-template-columns:80px 74px 1fr;gap:10px;align-items:start;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.42);padding:12px}.histYear{font-size:18px;font-weight:900;color:var(--brand)}.badge{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:5px 8px;font-size:12px;color:var(--gold);background:rgba(161,106,26,.08)}.badge.t2{color:var(--blue);background:rgba(47,95,159,.08)}.badge.t3{color:var(--muted);background:rgba(122,100,84,.1)}.errorBox{display:none;border:1px solid rgba(196,69,57,.24);background:rgba(196,69,57,.08);color:var(--bad);border-radius:18px;padding:14px;line-height:1.7}.skeleton{position:relative;overflow:hidden;background:rgba(255,255,255,.36);border-radius:16px;min-height:54px}.skeleton:after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);animation:shine 1.25s infinite}@keyframes shine{to{transform:translateX(100%)}}.loadingLayer{position:fixed;inset:auto 18px 18px auto;z-index:20;display:none;align-items:center;gap:10px;border:1px solid var(--line);background:rgba(255,250,242,.94);border-radius:999px;padding:10px 14px;box-shadow:var(--shadow);color:var(--muted);font-size:13px}.loadingLayer.show{display:flex}.spinner{width:16px;height:16px;border-radius:50%;border:2px solid rgba(165,52,40,.18);border-top-color:var(--brand);animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+    @media(max-width:1180px){.layout{grid-template-columns:1fr}.left{position:static}.stats{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:760px){.wrap{width:min(100% - 20px,1480px);padding-top:14px}.topbar{align-items:flex-start;flex-direction:column}.toolbar{width:100%}.dateCtl{width:100%;grid-template-columns:1fr auto}.btns{width:100%}.btns .btn{flex:1}.panelGrid,.infoGrid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.cardHead{flex-direction:column}.calendarTop{align-items:flex-start;flex-direction:column}.day{min-height:86px;padding:7px}.num{font-size:18px}.lunar,.gan{font-size:11px}.hist{grid-template-columns:64px 68px 1fr}.historyTools{width:100%}.historyTools input{min-width:0;width:100%}.historyTools select{width:100%}}
+    @media(max-width:460px){.stats{grid-template-columns:1fr}.week span{font-size:11px}.day{min-height:76px}.marks,.gan{display:none}.heroDay{font-size:72px}.brand h1{font-size:25px}}
+  
+    /* 正式版布局与占位符优化 */
+    :root{--gap:22px;--gap-sm:14px;--radius:26px}
+    .wrap{width:min(1460px,calc(100% - 40px));padding:28px 0 60px}
+    .topbar{margin-bottom:22px}.toolbar{gap:12px}.layout{grid-template-columns:minmax(500px,.98fr) minmax(0,1.42fr);gap:var(--gap)}
+    .left,.right{gap:var(--gap)}.card{border-radius:26px}.cardHead{padding:20px 20px 0}.cardBody{padding:20px}.panelGrid{gap:var(--gap)}
+    .hero{border-radius:34px;padding:clamp(26px,4vw,42px);margin-bottom:2px}.heroDay{margin:18px 0 10px}.stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.stat{min-height:82px;border-radius:20px;padding:14px}
+    .calendarTop{margin-bottom:16px}.calendar{border-radius:28px}.week span{padding:13px 4px}.days{background:rgba(255,255,255,.18)}
+    .day{min-height:98px;padding:12px;gap:6px;background:rgba(255,252,246,.35);display:grid;grid-template-rows:auto auto auto 1fr}.day:hover{background:#fffaf3}.day.sel{background:linear-gradient(180deg,rgba(165,52,40,.12),rgba(213,133,53,.08));box-shadow:inset 0 0 0 2px rgba(165,52,40,.42)}.day.off{background:rgba(255,255,255,.18);opacity:.42}.num{font-size:22px}.lunar{font-size:12px}.gan{font-size:11px}.marks{gap:5px;align-content:end;max-height:40px}.mark{font-size:10px;padding:3px 6px}
+    .infoGrid{gap:12px}.info{grid-template-columns:104px 1fr;border-radius:18px;padding:12px 13px}.mini{border-radius:20px;padding:16px}.node{grid-template-columns:86px 1fr;border-radius:18px;padding:12px 13px}.tags{gap:9px}.tag,.chip{padding:8px 11px}.tableWrap{border-radius:22px}th,td{padding:13px 14px}.historyList{gap:12px}.hist{border-radius:18px;padding:13px}
+    .placeholder-grid{display:grid;gap:12px}.placeholder-grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.placeholder-grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.placeholder-grid.cols-7{grid-template-columns:repeat(7,minmax(0,1fr))}.skel{position:relative;display:inline-block;overflow:hidden;border-radius:18px;background:linear-gradient(90deg,rgba(255,255,255,.38),rgba(255,255,255,.7),rgba(255,255,255,.38));background-size:220% 100%;animation:skel 1.25s ease-in-out infinite}.skel.cardish{height:82px;width:100%}.skel.line{height:16px;min-width:120px;border-radius:999px}.skel.daybox{height:98px;border-radius:0;border-top:1px solid var(--line);border-right:1px solid var(--line)}.skel.tagbox{height:36px;width:92px;border-radius:999px}.skel.rowbox{height:52px;width:100%;border-radius:14px}@keyframes skel{0%{background-position:120% 0}100%{background-position:-120% 0}}
+    #stats,#heroChips,#yi,#ji,#goodGods,#badGods{align-items:stretch}.tags .skel,.chips .skel{flex:0 0 auto}
+    @media(max-width:1180px){.wrap{width:min(100% - 32px,1460px)}.layout{grid-template-columns:1fr}.left{position:static}.stats{grid-template-columns:repeat(4,1fr)}.day{min-height:94px}}
+    @media(max-width:760px){.wrap{width:min(100% - 20px,1460px);padding-top:14px}.topbar{gap:14px;margin-bottom:16px}.cardHead{padding:16px 16px 0}.cardBody{padding:16px}.layout,.left,.right,.panelGrid{gap:14px}.stats{grid-template-columns:repeat(2,1fr)}.day{min-height:82px;padding:8px}.week span{padding:10px 2px}.info{grid-template-columns:86px 1fr}.node{grid-template-columns:68px 1fr}.hero{border-radius:28px;padding:22px}.heroTop{align-items:flex-start;flex-direction:column}.monthTitle{font-size:22px}}
+    @media(max-width:460px){.wrap{width:min(100% - 14px,1460px)}.stats{grid-template-columns:1fr}.day{min-height:68px;padding:7px}.marks,.gan{display:none}.num{font-size:18px}.lunar{font-size:11px}.calendar{border-radius:20px}.heroDay{font-size:70px}}
+
+
+    /* 版面留白重整：正式版 */
+    :root{
+      --page-gap:30px;
+      --section-gap:28px;
+      --card-pad:26px;
+      --card-pad-sm:20px;
+      --inner-gap:18px;
+      --inner-gap-sm:14px;
+      --radius:28px;
+    }
+    .wrap{width:min(1480px,calc(100% - 48px));padding:32px 0 72px}
+    .topbar{margin-bottom:28px;gap:22px}
+    .toolbar{gap:14px}
+    .hero{border-radius:38px;padding:clamp(30px,4.2vw,48px);margin-bottom:24px}
+    .heroTop{gap:18px}.heroDay{margin:24px 0 14px}.heroTitle{margin-bottom:22px;max-width:780px}
+    .chips,.tags,.btns,.toolbar{row-gap:12px;column-gap:12px}
+    #stats{margin:0 0 30px}.stats{gap:16px}.stat{min-height:94px;padding:17px 18px;border-radius:22px}.stat b{margin-bottom:10px}
+    .layout{grid-template-columns:minmax(520px,1fr) minmax(0,1.42fr);gap:32px;align-items:start}
+    .left,.right{gap:28px}.card{border-radius:30px}.cardHead{padding:26px 26px 0;gap:18px}.cardHead h2{font-size:26px}.cardHead h3{font-size:22px}.sub{margin-top:8px;line-height:1.7}.cardBody{padding:24px 26px 26px}.cardHead + .cardBody{padding-top:20px}.panelGrid{gap:28px}
+    .infoGrid{gap:16px}.info{grid-template-columns:108px 1fr;gap:14px;padding:16px 17px;border-radius:20px;min-height:58px;line-height:1.55}
+    .mini{padding:20px;border-radius:22px}.mini + .mini{margin-top:18px!important}.mini h4{margin-bottom:14px}.tag,.chip{padding:9px 13px;line-height:1.32}
+    .calendarTop{margin-bottom:20px;gap:18px}.calendar{border-radius:30px}.week span{padding:15px 6px}.day{min-height:116px;padding:14px;gap:8px}.num{font-size:23px}.lunar{min-height:18px;line-height:1.45}.gan{line-height:1.45}.marks{gap:6px;max-height:48px}.mark{padding:4px 7px;line-height:1.25}
+    .nodes{gap:14px}.node{grid-template-columns:92px 1fr;gap:14px;padding:15px 16px;border-radius:20px;line-height:1.6}
+    .tableWrap{border-radius:24px}table{border-spacing:0}th,td{padding:16px 17px;line-height:1.65}.hourCell{margin-bottom:4px}.hourDetail{margin-top:20px}
+    .historyTools{gap:12px}.historyList{gap:14px}.hist{grid-template-columns:86px 82px 1fr;gap:16px;padding:16px 18px;border-radius:20px;line-height:1.7}.badge{padding:6px 10px}
+    .errorBox{margin:-8px 0 28px;padding:16px 18px}.skel.cardish{height:94px}.skel.daybox{height:116px}.skel.rowbox{height:60px}.skel.tagbox{height:40px;width:104px}
+    @media(max-width:1180px){.wrap{width:min(100% - 36px,1480px)}.layout{grid-template-columns:1fr;gap:28px}.left,.right{gap:24px}.stats{grid-template-columns:repeat(3,1fr)}.day{min-height:104px}.skel.daybox{height:104px}}
+    @media(max-width:760px){.wrap{width:min(100% - 22px,1480px);padding:18px 0 54px}.topbar{margin-bottom:20px;gap:16px}.toolbar{gap:12px}.hero{border-radius:30px;padding:24px;margin-bottom:20px}.heroDay{margin:18px 0 10px}#stats{margin-bottom:22px}.stats{gap:12px;grid-template-columns:repeat(2,1fr)}.stat{min-height:84px;padding:14px;border-radius:18px}.layout,.left,.right,.panelGrid{gap:20px}.card{border-radius:24px}.cardHead{padding:20px 20px 0;gap:12px}.cardBody{padding:18px 20px 20px}.cardHead + .cardBody{padding-top:16px}.infoGrid{gap:12px}.info{grid-template-columns:92px 1fr;padding:13px 14px;border-radius:17px}.mini{padding:16px;border-radius:18px}.mini + .mini{margin-top:14px!important}.calendarTop{margin-bottom:16px}.week span{padding:11px 2px}.day{min-height:88px;padding:9px;gap:5px}.skel.daybox{height:88px}.nodes{gap:10px}.node{grid-template-columns:74px 1fr;gap:10px;padding:12px 13px;border-radius:16px}th,td{padding:13px 14px;line-height:1.55}.hist{grid-template-columns:66px 70px 1fr;gap:10px;padding:13px 14px}}
+    @media(max-width:460px){.wrap{width:min(100% - 16px,1480px)}.stats{grid-template-columns:1fr;gap:10px}.stat{min-height:76px}.cardHead{padding:18px 18px 0}.cardBody{padding:16px 18px 18px}.info{grid-template-columns:1fr;gap:6px}.day{min-height:74px;padding:7px}.skel.daybox{height:74px}.calendar{border-radius:20px}.hist{grid-template-columns:1fr;gap:8px}.historyTools input,.historyTools select{width:100%}}
+  
+
+    /* final layout polish */
+    .layout{grid-template-columns:minmax(540px,.92fr) minmax(0,1.6fr);gap:32px;align-items:start}
+    .left{position:sticky;top:24px;gap:0}.right{gap:30px}.card{border-radius:28px}.cardHead{padding:24px 26px 0;gap:18px}.cardHead h2{font-size:28px}.cardHead h3{font-size:23px}.sub{margin-top:8px;line-height:1.7}.cardBody{padding:24px 26px 26px}.panelGrid{gap:24px}.infoGrid{gap:16px}.info{padding:15px 16px;border-radius:20px;grid-template-columns:108px 1fr;line-height:1.62}.mini{padding:18px;border-radius:22px}
+    .calendarTop{margin-bottom:22px}.monthTitle{font-size:28px}.calendar{border-radius:30px}.week span{padding:16px 6px;font-size:13px}.day{min-height:128px;padding:13px;gap:7px}.num{font-size:24px}.lunar{font-size:13px}.gan{font-size:12px}.marks{gap:6px;max-height:45px}.mark{font-size:11px;padding:4px 7px}
+    .nodes{gap:18px}.nodeGroups{display:grid;gap:16px}.nodeGroup{border:1px solid var(--line);border-radius:22px;background:rgba(255,255,255,.38);padding:16px}.nodeGroupTitle{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.nodeGroupTitle b{font-size:17px}.nodeChips{display:flex;flex-wrap:wrap;gap:9px}.nodeChip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.52);padding:7px 10px;color:var(--muted);font-size:13px}.nodeChip.term{color:var(--blue);background:rgba(47,95,159,.08);border-color:rgba(47,95,159,.18)}.nodeChip.festival{color:var(--good);background:rgba(22,122,77,.08);border-color:rgba(22,122,77,.18)}.monthHighlights{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}.nodeCard{border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.42);padding:15px 16px;line-height:1.65}.nodeCardDate{font-weight:900;color:var(--brand);margin-bottom:4px}.nodeCardText{color:var(--text);font-weight:800}
+    #season.seasonGrid{display:grid;grid-template-columns:1.05fr 1fr;gap:18px}.seasonHero{border:1px solid var(--line);border-radius:24px;padding:20px;background:linear-gradient(135deg,rgba(47,95,159,.1),rgba(255,255,255,.42));min-height:160px}.seasonHero .label{color:var(--muted);font-size:13px}.seasonHero .value{font-size:32px;font-weight:900;margin:10px 0 6px}.seasonHero .desc{color:var(--muted);line-height:1.7}.seasonList{display:grid;gap:12px}.seasonItem{display:grid;grid-template-columns:96px 1fr;gap:12px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.42);padding:13px 14px;line-height:1.55}.seasonItem b{color:var(--muted);font-weight:500}.seasonItem span{font-weight:800}
+    .tableWrap{border-radius:26px}th,td{padding:17px 18px;line-height:1.7}.hourDetail{margin-top:22px}.historyTools{gap:12px}.historyList{gap:16px}.hist{grid-template-columns:92px 86px 1fr;gap:18px;padding:18px 20px;border-radius:22px;line-height:1.75}
+    @media(max-width:1180px){.layout{grid-template-columns:1fr}.left{position:relative;top:auto}.monthHighlights{grid-template-columns:1fr}}
+    @media(max-width:760px){.layout,.right,.panelGrid{gap:20px}.cardHead{padding:20px 20px 0}.cardBody{padding:20px}.day{min-height:96px;padding:9px}.monthTitle{font-size:24px}.info{grid-template-columns:92px 1fr}.hist{grid-template-columns:70px 74px 1fr;padding:15px}.monthHighlights{grid-template-columns:1fr}#season.seasonGrid{grid-template-columns:1fr}.seasonHero .value{font-size:28px}}
+    @media(max-width:460px){.day{min-height:72px}.marks,.gan{display:none}.cardBody{padding:17px}.cardHead{padding:17px 17px 0}.hist{grid-template-columns:1fr;gap:8px}.seasonItem{grid-template-columns:1fr}}
+
+
+    /* 最新排版优化：月历加宽、标签去冗余、时令重排、十二时辰少滚动 */
+    .wrap{width:min(1560px,calc(100% - 48px))}
+    .layout{grid-template-columns:minmax(700px,1.28fr) minmax(380px,.82fr);gap:34px;align-items:start}
+    .left{position:sticky;top:24px}.right{gap:28px}
+    .calendar{border-radius:32px}.calendarTop{margin-bottom:24px}.monthTitle{font-size:30px}.week span{padding:17px 6px}.day{min-height:136px;padding:14px 13px;gap:7px}.marks{max-height:52px}.mark{max-width:100%;font-size:11px;padding:4px 7px}
+    .seasonWrap{display:grid;grid-template-columns:minmax(180px,.92fr) minmax(0,1.08fr);gap:18px;align-items:stretch}
+    .seasonLead{border:1px solid var(--line);border-radius:26px;padding:22px;background:linear-gradient(135deg,rgba(47,95,159,.12),rgba(255,255,255,.46));display:flex;flex-direction:column;justify-content:center;min-height:178px;box-shadow:inset 0 1px 0 rgba(255,255,255,.55)}
+    .seasonKicker{color:var(--muted);font-size:13px;letter-spacing:.08em}.seasonTerm{font-size:38px;font-weight:900;line-height:1.1;margin:12px 0 8px;color:var(--blue)}.seasonDesc{color:var(--muted);line-height:1.75}
+    .seasonCards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.seasonCard{border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.44);padding:15px 16px;min-height:78px;display:flex;flex-direction:column;justify-content:center;gap:7px}.seasonCardLabel{font-size:12px;color:var(--muted)}.seasonCardValue{font-size:17px;font-weight:900;line-height:1.45;word-break:break-word}
+    .tableWrap{overflow:visible;border-radius:24px}.tableWrap table{min-width:0;width:100%;table-layout:fixed}.tableWrap th,.tableWrap td{padding:13px 12px;line-height:1.55;word-break:break-word}.tableWrap th:nth-child(1){width:12%}.tableWrap th:nth-child(2){width:15%}.tableWrap th:nth-child(3){width:12%}.tableWrap th:nth-child(4){width:15%}.tableWrap th:nth-child(5){width:14%}.tableWrap th:nth-child(6),.tableWrap th:nth-child(7){width:16%}.tableWrap .tag{font-size:12px;padding:6px 8px;margin:2px 2px 2px 0}
+    @media(max-width:1260px){.wrap{width:min(100% - 36px,1560px)}.layout{grid-template-columns:1fr}.left{position:relative;top:auto}.day{min-height:122px}}
+    @media(max-width:900px){.seasonWrap{grid-template-columns:1fr}.seasonLead{min-height:132px}.seasonCards{grid-template-columns:repeat(2,minmax(0,1fr))}.tableWrap{border:0;background:transparent}.tableWrap table,.tableWrap tbody,.tableWrap tr,.tableWrap td{display:block;width:100%}.tableWrap thead{display:none}.tableWrap tr{border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.42);padding:13px 15px;margin-bottom:12px}.tableWrap tr.active{box-shadow:inset 0 0 0 2px rgba(165,52,40,.24)}.tableWrap td{border:0!important;padding:7px 0;display:grid;grid-template-columns:76px 1fr;gap:10px;align-items:start}.tableWrap td:before{content:attr(data-label);color:var(--muted);font-size:12px;font-weight:500}.tableWrap td:first-child{padding-top:0}.tableWrap td:last-child{padding-bottom:0}}
+    @media(max-width:760px){.wrap{width:min(100% - 22px,1560px)}.calendarTop{align-items:flex-start;flex-direction:column;gap:14px}.day{min-height:100px;padding:8px 7px;gap:4px}.num{font-size:20px}.lunar{font-size:11px}.gan{font-size:10px}.marks{display:flex;max-height:28px;gap:3px}.mark{font-size:9px;padding:2px 5px}.seasonCards{grid-template-columns:1fr}.seasonTerm{font-size:32px}}
+    @media(max-width:460px){.wrap{width:min(100% - 14px,1560px)}.day{min-height:86px;padding:7px 5px}.marks{display:flex;max-height:24px}.gan{display:none}.mark{font-size:9px;padding:2px 4px}.week span{font-size:11px;padding:9px 1px}.monthTitle{font-size:22px}.seasonLead{padding:18px;border-radius:22px}.seasonCard{padding:13px 14px;min-height:68px}.tableWrap td{grid-template-columns:64px 1fr}}
+    @media(max-width:360px){.day{min-height:78px}.marks{display:none}.lunar{font-size:10px}.num{font-size:18px}}
+
+
+    /* 本轮正式样式：修正时令错位、压缩时辰高度、月历略收窄 */
+    .wrap{width:min(1500px,calc(100% - 48px))}
+    .layout{grid-template-columns:minmax(610px,1.05fr) minmax(420px,.95fr);gap:30px;align-items:start}
+    .left{position:sticky;top:24px}.right{gap:26px}
+    .calendar{border-radius:30px}.calendarTop{margin-bottom:20px}.monthTitle{font-size:28px}.week span{padding:14px 5px}.day{min-height:122px;padding:12px 11px;gap:6px}.num{font-size:23px}.lunar{font-size:12px}.gan{font-size:11px}.marks{max-height:44px;gap:5px}.mark{font-size:10px;padding:3px 6px}
+
+    #season.seasonClean{display:grid;grid-template-columns:minmax(150px,.72fr) minmax(0,1.28fr);gap:14px;align-items:stretch}
+    .seasonPrimary{border:1px solid var(--line);border-radius:22px;background:linear-gradient(135deg,rgba(47,95,159,.11),rgba(255,255,255,.48));padding:18px;min-height:132px;display:flex;flex-direction:column;justify-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.55)}
+    .seasonLabel{color:var(--muted);font-size:12px;letter-spacing:.08em}.seasonValue{font-size:34px;font-weight:900;line-height:1.12;margin:10px 0 7px;color:var(--blue)}.seasonProgress{color:var(--muted);line-height:1.65;font-size:14px}
+    .seasonMetaGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.seasonMeta{border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.42);padding:13px 14px;min-height:72px;display:grid;gap:6px;align-content:center}.seasonMeta b{font-weight:500;color:var(--muted);font-size:12px}.seasonMeta span{font-weight:900;line-height:1.45;word-break:break-word}
+
+    .tableWrap{overflow:visible;border-radius:22px}.tableWrap table{min-width:0;width:100%;table-layout:fixed}.tableWrap th,.tableWrap td{padding:10px 10px;line-height:1.45;font-size:13px;word-break:break-word}.tableWrap th:nth-child(1){width:11%}.tableWrap th:nth-child(2){width:13%}.tableWrap th:nth-child(3){width:12%}.tableWrap th:nth-child(4){width:14%}.tableWrap th:nth-child(5){width:14%}.tableWrap th:nth-child(6),.tableWrap th:nth-child(7){width:18%}
+    .hourCell{font-size:14px}.hourText{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;line-height:1.48;white-space:normal}.hourText.goodText{color:var(--good)}.hourText.badText{color:var(--bad)}
+    .hourDetail{margin-top:16px}.hourDetail .infoGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+
+    @media(max-width:1260px){.wrap{width:min(100% - 36px,1500px)}.layout{grid-template-columns:1fr}.left{position:relative;top:auto}.day{min-height:112px}}
+    @media(max-width:900px){#season.seasonClean{grid-template-columns:1fr}.seasonPrimary{min-height:auto}.seasonMetaGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.tableWrap{border:0;background:transparent}.tableWrap table,.tableWrap tbody,.tableWrap tr,.tableWrap td{display:block;width:100%}.tableWrap thead{display:none}.tableWrap tr{border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.42);padding:11px 13px;margin-bottom:10px}.tableWrap td{border:0!important;padding:5px 0;display:grid;grid-template-columns:66px 1fr;gap:8px;align-items:start}.tableWrap td:before{content:attr(data-label);color:var(--muted);font-size:12px;font-weight:500}.hourText{-webkit-line-clamp:2}.hourDetail .infoGrid{grid-template-columns:1fr}}
+    @media(max-width:760px){.wrap{width:min(100% - 22px,1500px)}.day{min-height:92px;padding:8px 7px;gap:4px}.week span{padding:10px 2px}.num{font-size:19px}.lunar{font-size:11px}.gan{font-size:10px}.marks{max-height:26px;gap:3px}.mark{font-size:9px;padding:2px 5px}.seasonValue{font-size:30px}.seasonMetaGrid{grid-template-columns:1fr}}
+    @media(max-width:460px){.wrap{width:min(100% - 14px,1500px)}.day{min-height:78px;padding:7px 5px}.gan{display:none}.marks{max-height:22px}.calendar{border-radius:20px}.monthTitle{font-size:22px}.tableWrap tr{padding:10px 12px}.tableWrap td{grid-template-columns:58px 1fr}.hourText{-webkit-line-clamp:2}}
+
+    #season.seasonClean{display:flex!important;flex-direction:column!important;gap:16px!important;align-items:stretch!important}
+    .seasonPrimary{min-height:0!important;padding:20px 22px!important}
+    .seasonMetaGrid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important}
+    .seasonMeta{min-height:76px!important}
+    @media(max-width:1100px){.seasonMetaGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+    @media(max-width:620px){.seasonPrimary{padding:18px!important}.seasonMetaGrid{grid-template-columns:1fr!important}.seasonMeta{min-height:0!important}}
+
+    /* 本轮调整：时令无边框，上下信息流 */
+    #season.seasonClean{display:flex!important;flex-direction:column!important;gap:20px!important;align-items:stretch!important}
+    #season.seasonClean .seasonPrimary{border:0!important;background:transparent!important;box-shadow:none!important;border-radius:0!important;padding:0!important;min-height:0!important;display:block!important}
+    #season.seasonClean .seasonLabel,#season.seasonClean .seasonMeta b{display:block!important;color:var(--muted)!important;font-size:13px!important;line-height:1.45!important;letter-spacing:.06em!important;font-weight:600!important;margin:0 0 6px!important}
+    #season.seasonClean .seasonValue{color:var(--blue)!important;font-size:34px!important;font-weight:900!important;line-height:1.15!important;margin:0 0 7px!important}
+    #season.seasonClean .seasonProgress{color:var(--muted)!important;font-size:14px!important;line-height:1.65!important;margin:0!important}
+    #season.seasonClean .seasonMetaGrid{display:flex!important;flex-direction:column!important;gap:18px!important;align-items:stretch!important}
+    #season.seasonClean .seasonMeta{border:0!important;background:transparent!important;box-shadow:none!important;border-radius:0!important;padding:0!important;min-height:0!important;display:block!important}
+    #season.seasonClean .seasonMeta span{display:block!important;font-size:18px!important;line-height:1.55!important;font-weight:900!important;color:var(--text)!important;word-break:break-word!important}
+    @media(max-width:760px){#season.seasonClean{gap:18px!important}#season.seasonClean .seasonValue{font-size:30px!important}#season.seasonClean .seasonMetaGrid{gap:16px!important}#season.seasonClean .seasonMeta span{font-size:17px!important}}
+  </style>
+</head>
+<body>
+  <div class="loadingLayer" id="loading"><span class="spinner"></span><span>加载中</span></div>
+  <main class="wrap">
+    <header class="topbar">
+      <div class="brand"><div class="seal">万历</div><div><h1>肖女士万年历</h1><p>阳历 · 农历 · 黄历 · 时辰 · 历史</p></div></div>
+      <div class="toolbar">
+        <div class="dateCtl"><input id="dateInput" type="date" aria-label="选择日期"><button class="btn primary" id="goBtn">查询</button></div>
+        <div class="btns"><button class="btn" id="prevDay">前一日</button><button class="btn" id="todayBtn">今日</button><button class="btn" id="nextDay">后一日</button></div>
+      </div>
+    </header>
+
+    <section class="hero" id="hero" data-mark="日">
+      <div class="heroTop"><span class="status" id="status">加载中</span><div class="btns"><button class="btn small" id="copyBtn">复制</button><button class="btn small" id="shareBtn">分享</button></div></div>
+      <div class="heroDay" id="heroDay">--</div>
+      <p class="heroTitle" id="heroTitle">正在加载</p>
+      <div class="chips" id="heroChips"><span class="skeleton" style="width:180px"></span></div>
+    </section>
+
+    <div class="stats" id="stats" aria-live="polite">
+      <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+    </div>
+
+    <div class="errorBox" id="errorBox">数据加载失败，请稍后重试。</div>
+
+    <section class="layout">
+      <aside class="left">
+        <section class="card">
+          <div class="cardBody">
+            <div class="calendarTop"><div class="monthTitle" id="monthTitle">--年--月</div><div class="btns"><button class="btn small" id="prevMonth">上月</button><button class="btn small" id="nextMonth">下月</button></div></div>
+            <div class="calendar" aria-label="月历">
+              <div class="week"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+              <div class="days" id="days"></div>
+            </div>
+          </div>
+        </section>
+      </aside>
+
+      <section class="right">
+        <section class="card">
+          <div class="cardHead"><div><h2>今日总览</h2><p class="sub" id="overviewSub">阳历、农历、节气与基础信息</p></div></div>
+          <div class="cardBody"><div class="infoGrid" id="overview"></div></div>
+        </section>
+
+        <section class="panelGrid">
+          <section class="card">
+            <div class="cardHead"><div><h3>今日所宜</h3><p class="sub">适合办理的事项</p></div></div>
+            <div class="cardBody"><div class="tags" id="yi"><span class="empty">暂无数据</span></div></div>
+          </section>
+          <section class="card">
+            <div class="cardHead"><div><h3>今日所忌</h3><p class="sub">建议避开的事项</p></div></div>
+            <div class="cardBody"><div class="tags" id="ji"><span class="empty">暂无数据</span></div></div>
+          </section>
+        </section>
+
+        <section class="card">
+          <div class="cardHead"><div><h3>黄历细节</h3><p class="sub">干支、值日、黄黑道、九星、二十八宿</p></div></div>
+          <div class="cardBody"><div class="infoGrid" id="almanac"></div></div>
+        </section>
+
+        <section class="panelGrid">
+          <section class="card">
+            <div class="cardHead"><div><h3>时令</h3><p class="sub">节气、物候与月相</p></div></div>
+            <div class="cardBody"><div class="infoGrid" id="season"></div></div>
+          </section>
+          <section class="card">
+            <div class="cardHead"><div><h3>神煞</h3><p class="sub">吉神与凶煞</p></div></div>
+            <div class="cardBody"><div class="mini" style="margin-bottom:10px"><h4>吉神</h4><div class="tags" id="goodGods"></div></div><div class="mini"><h4>凶煞</h4><div class="tags" id="badGods"></div></div></div>
+          </section>
+        </section>
+
+        <section class="card">
+          <div class="cardHead"><div><h3>十二时辰</h3><p class="sub">时辰吉凶与宜忌</p></div></div>
+          <div class="cardBody"><div class="tableWrap"><table><thead><tr><th>时辰</th><th>时间</th><th>时柱</th><th>黄黑道</th><th>九星</th><th>时宜</th><th>时忌</th></tr></thead><tbody id="hourRows"><tr><td colspan="7"></td></tr></tbody></table></div><div class="hourDetail" id="hourDetail"></div></div>
+        </section>
+
+        <section class="card">
+          <div class="cardHead"><div><h3>本月节点</h3><p class="sub" id="nodesSub"></p></div></div>
+          <div class="cardBody"><div class="nodes" id="monthNodes"><span class="empty">暂无数据</span></div></div>
+        </section>
+
+        <section class="card">
+          <div class="cardHead"><div><h3>历史上的今天</h3><p class="sub" id="historySub">事件、出生与逝世</p></div><div class="historyTools"><input id="historySearch" placeholder="搜索年份 / 人物 / 事件"><select id="historyType"><option value="all">全部</option><option value="1">事件</option><option value="2">出生</option><option value="3">逝世</option></select></div></div>
+          <div class="cardBody"><div class="historyList" id="historyList"><span class="empty">暂无数据</span></div></div>
+        </section>
+      </section>
+    </section>
+  </main>
+
+
+  <script>
+  (()=>{
+    'use strict';
+    const API_DEFAULT='https://api.mrwang.com/wannianli.php';
+    const $=id=>document.getElementById(id);
+    const ids=['loading','status','dateInput','goBtn','prevDay','todayBtn','nextDay','prevMonth','nextMonth','hero','heroDay','heroTitle','heroChips','stats','errorBox','monthTitle','days','monthNodes','nodesSub','overviewSub','overview','yi','ji','almanac','season','goodGods','badGods','hourRows','hourDetail','historySearch','historyType','historyList','historySub','copyBtn','shareBtn'];
+    const els=Object.fromEntries(ids.map(id=>[id,$(id)]));
+    const params=new URLSearchParams(location.search);
+    const state={data:null,ymd:initDate(),hourIndex:null,historyType:'all',historySearch:'',apiBase:params.get('api')||API_DEFAULT,controller:null,cache:new Map()};
+    const CACHE_PREFIX='mrwang-wannianli-v4:';
+    const CACHE_TTL=1000*60*60*24*30;
+
+
+    function initDate(){const v=params.get('date');return /^\d{4}-\d{2}-\d{2}$/.test(v||'')?v:fmtDate(new Date())}
+    function pad(n){return String(n).padStart(2,'0')}
+    function fmtDate(d){return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`}
+    function parseYmd(ymd){const [year,month,day]=String(ymd).split('-').map(Number);return {year,month,day}}
+    function todayYmd(){return fmtDate(new Date())}
+    function esc(v){return String(v??'').replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]))}
+    function asText(v,fallback='无'){
+      if(v===undefined||v===null||v==='') return fallback;
+      if(Array.isArray(v)) return v.map(x=>asText(x,'')).filter(Boolean).join('、')||fallback;
+      if(typeof v==='object') return v.text||v.name||v.value||v.label||fallback;
+      return String(v);
+    }
+    function isBlankText(v){
+      const s=String(v??'').trim();
+      return !s||s==='无'||s==='暂无'||s==='暂无数据'||s==='null'||s==='undefined';
+    }
+    function arr(v){
+      if(!v) return [];
+      if(Array.isArray(v)) return v.map(x=>asText(x,'')).filter(x=>!isBlankText(x));
+      if(typeof v==='string') return v.split(/[、,，\n]+/).map(s=>s.trim()).filter(x=>!isBlankText(x));
+      const s=asText(v,'');
+      return isBlankText(s)?[]:[s];
+    }
+    function uniq(a){return [...new Set(a.filter(Boolean))]}
+    const SOLAR_TERMS=new Set('小寒 大寒 立春 雨水 惊蛰 春分 清明 谷雨 立夏 小满 芒种 夏至 小暑 大暑 立秋 处暑 白露 秋分 寒露 霜降 立冬 小雪 大雪 冬至'.split(' '));
+    function shortEventText(v){
+      let s=asText(v,'').trim();
+      s=s.replace(/^\d{4}年\d{1,2}月\d{1,2}日\s*/,'').replace(/^\d{1,2}日\s*/,'');
+      s=s.replace(/^农历[^\s]{1,12}年(?:闰)?[正一二三四五六七八九十冬腊]{1,3}月(?:初|十|廿|卅)?[一二三四五六七八九十]{1,3}\s*/,'');
+      s=s.replace(/^农历[^\s]*?月[^\s]*?日?\s*/,'');
+      s=s.replace(/[（(]\s*(休|班)\s*[)）]/g,'').replace(/\s+/g,' ').trim();
+      const noJie=s.replace(/节$/,'');
+      if(SOLAR_TERMS.has(noJie)) s=noJie;
+      return s;
+    }
+    function eventKey(v){
+      const s=shortEventText(v);
+      const noJie=s.replace(/节$/,'');
+      return SOLAR_TERMS.has(noJie)?noJie:s.replace(/[（(].*?[)）]/g,'').trim();
+    }
+    function uniqueEventTexts(list){
+      const seen=new Set(),out=[];
+      arr(list).forEach(v=>{const text=shortEventText(v),key=eventKey(text);if(!text||seen.has(key))return;seen.add(key);out.push(text)});
+      return out;
+    }
+    function cacheKey(ymd){return CACHE_PREFIX+encodeURIComponent(state.apiBase)+'|'+ymd}
+    function readCache(ymd){
+      const key=cacheKey(ymd);
+      if(state.cache.has(key)) return state.cache.get(key);
+      try{
+        const raw=localStorage.getItem(key); if(!raw) return null;
+        const item=JSON.parse(raw); if(!item||!item.data||Date.now()-Number(item.t||0)>CACHE_TTL){localStorage.removeItem(key);return null}
+        state.cache.set(key,item.data); return item.data;
+      }catch(e){return null}
+    }
+    function writeCache(ymd,json){
+      const key=cacheKey(ymd); state.cache.set(key,json);
+      try{localStorage.setItem(key,JSON.stringify({t:Date.now(),data:json}))}catch(e){}
+    }
+    function schedulePrefetch(ymd){
+      const run=()=>{[-1,1].forEach(offset=>{const p=parseYmd(ymd);const dt=new Date(p.year,p.month-1,p.day+offset);prefetchDate(fmtDate(dt))})};
+      (window.requestIdleCallback||window.setTimeout)(run,600);
+    }
+    async function prefetchDate(ymd){
+      if(readCache(ymd)) return;
+      try{
+        const res=await fetch(apiUrl(ymd),{cache:'force-cache'}); if(!res.ok) return;
+        const json=await res.json(); if(json&&json.data&&(!json.code||String(json.code)==='200')) writeCache(ymd,json);
+      }catch(e){}
+    }
+    function root(){return state.data?.data||{}}
+    function tyme(){return root().tyme||{}}
+    function apiUrl(ymd=state.ymd){const {year,month,day}=parseYmd(ymd);const u=new URL(state.apiBase,location.href);u.searchParams.set('year',year);u.searchParams.set('month',month);u.searchParams.set('day',day);return u.toString()}
+    function setStatus(s,cls=''){els.status.textContent=s;els.status.className=`status ${cls}`.trim()}
+    function loading(on){els.loading.classList.toggle('show',!!on)}
+    function setError(msg){els.errorBox.style.display='block';els.errorBox.textContent=msg||'数据加载失败，请稍后重试。'}
+    function clearError(){els.errorBox.style.display='none';els.errorBox.textContent=''}
+    function skel(cls='line',n=1){return Array.from({length:n},()=>`<span class="skel ${cls}"></span>`).join('')}
+    function renderPlaceholders(){
+      els.hero.dataset.mark='';els.heroDay.innerHTML='<span class="skel line" style="display:block;width:1.2em;height:.78em;border-radius:18px"></span>';els.heroTitle.innerHTML=skel('line',1);els.heroChips.innerHTML=skel('tagbox',4);
+      els.stats.innerHTML=skel('cardish',6);els.days.innerHTML=skel('daybox',42);els.monthNodes.innerHTML=skel('rowbox',4);
+      els.overview.innerHTML=skel('cardish',8);els.yi.innerHTML=skel('tagbox',6);els.ji.innerHTML=skel('tagbox',5);els.almanac.innerHTML=skel('cardish',10);els.season.innerHTML=skel('cardish',6);
+      els.goodGods.innerHTML=skel('tagbox',5);els.badGods.innerHTML=skel('tagbox',5);els.hourRows.innerHTML='<tr><td colspan="7">'+skel('rowbox',6)+'</td></tr>';els.hourDetail.innerHTML=skel('cardish',1);els.historyList.innerHTML=skel('rowbox',6);
+    }
+    function setUrlDate(ymd){const u=new URL(location.href);u.searchParams.set('date',ymd);if(params.get('api'))u.searchParams.set('api',state.apiBase);history.replaceState(null,'',u.toString())}
+
+    async function load(ymd){
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(ymd||'')) return;
+      state.ymd=ymd; els.dateInput.value=ymd; setUrlDate(ymd); clearError(); setStatus('加载中');
+      const url=apiUrl(ymd);
+      const cached=readCache(ymd);
+      if(cached){state.data=cached;state.hourIndex=findHourIndex();setStatus('已更新','ok');renderAll();schedulePrefetch(ymd);return}
+      loading(true);
+      renderPlaceholders();
+      if(state.controller) state.controller.abort();
+      state.controller=new AbortController();
+      const timer=setTimeout(()=>state.controller.abort(),12000);
+      try{
+        const res=await fetch(url,{cache:'force-cache',signal:state.controller.signal});
+        const raw=await res.text();
+        if(!res.ok) throw new Error('数据加载失败，请稍后重试。');
+        let json; try{json=JSON.parse(raw)}catch(e){throw new Error('数据格式异常，请稍后重试。')}
+        if(!json||!json.data) throw new Error('暂无数据。');
+        if(json.code&&String(json.code)!=='200') throw new Error('数据加载失败，请稍后重试。');
+        writeCache(ymd,json);state.data=json;state.hourIndex=findHourIndex();
+        setStatus('已更新','ok');
+        requestAnimationFrame(()=>{renderAll();schedulePrefetch(ymd)});
+      }catch(e){
+        if(e.name==='AbortError') setStatus('加载超时','err'); else setStatus('加载失败','err');
+        state.data=null;renderEmpty();setError(e.name==='AbortError'?'数据加载超时，请稍后重试。':(e.message||'数据加载失败，请稍后重试。'));
+      }finally{clearTimeout(timer);loading(false)}
+    }
+
+    function renderEmpty(){
+      const {year,month,day}=parseYmd(state.ymd);
+      els.hero.dataset.mark=day||'日'; els.heroDay.textContent=day||'--'; els.heroTitle.textContent=state.ymd; els.heroChips.innerHTML='<span class="chip bad">暂无数据</span>';
+      els.stats.innerHTML=''; els.monthTitle.textContent=`${year||'--'}年${month||'--'}月`; renderCalendar(makeFallbackCalendar(state.ymd));
+      ['monthNodes','overview','yi','ji','almanac','season','goodGods','badGods','hourDetail','historyList'].forEach(id=>els[id].innerHTML='<span class="empty">暂无数据</span>');
+      els.hourRows.innerHTML='<tr><td colspan="7"></td></tr>'; els.overviewSub.textContent='阳历、农历、节气与基础信息'; els.historySub.textContent='事件、出生与逝世'; els.nodesSub.textContent='';
+    }
+
+    function renderAll(){
+      const d=root(),t=tyme(),solar=t.solar?.day||{},lunar=t.lunar?.day||{},req=t.request||{};
+      const fallback=`${req.year||parseYmd(state.ymd).year}-${pad(req.month||parseYmd(state.ymd).month)}-${pad(req.day||parseYmd(state.ymd).day)}`;
+      const ymd=solar.ymd||fallback; state.ymd=ymd; els.dateInput.value=ymd;
+      const {day}=parseYmd(ymd); els.hero.dataset.mark=day||'日'; els.heroDay.textContent=day||'--';
+      const weekday=t.overview?.weekday||solar.weekday||(d.xingqiji?`星期${d.xingqiji}`:'');
+      els.heroTitle.textContent=`${asText(t.overview?.solar_text||solar.text,ymd)}${weekday?' · '+weekday:''}`;
+      els.overviewSub.textContent=uniq([asText(t.overview?.lunar_text||lunar.text||d.nongli,''),d.xingzuo?`${d.xingzuo}座`:'',asText(d.jieqi||t.solar?.time?.term,'')]).join(' · ')||'阳历、农历、节气与基础信息';
+      els.monthTitle.textContent=t.month?.text||t.solar?.month?.text||`${parseYmd(ymd).year}年${parseYmd(ymd).month}月`;
+      renderHeroChips();renderStats();renderCalendar(getCalendarCells());renderMonthNodes();renderOverview();renderYiJi();renderAlmanac();renderSeason();renderGods();renderHours();renderHistory();
+    }
+
+    function cssTone(v){if(/凶|忌|黑道|赤口|佛灭/.test(v))return'bad';if(/吉|宜|黄道|青龙|金匮|玉堂|司命|明堂|休/.test(v))return'good';if(/节|气|候|月|星|雨|霜|雪|暑|寒|分|至/.test(v))return'blue';return'gold'}
+    function tagHtml(items,cls){const list=uniq(items);return list.length?list.map(v=>`<span class="tag ${cls||cssTone(v)}">${esc(v)}</span>`).join(''):'<span class="empty">暂无数据</span>'}
+    function tagHtmlBlank(items,cls){const list=uniq(items);return list.length?list.map(v=>`<span class="tag ${cls||cssTone(v)}">${esc(v)}</span>`).join(''):''}
+    function infoRows(rows){const valid=rows.map(r=>r?[r[0],asText(r[1],'')]:null).filter(r=>r&&!isBlankText(r[1]));return valid.length?valid.map(([k,v])=>`<div class="info"><b>${esc(k)}</b><span>${esc(v)}</span></div>`).join(''):'<span class="empty">暂无数据</span>'}
+
+    function renderHeroChips(){
+      const d=root(),t=tyme(),l=t.lunar?.day||{},al=t.almanac||{},sc=t.sixty_cycle||{};
+      const values=uniq([t.overview?.hero_hint,d.nongli||t.overview?.lunar_text||l.text,d.shengxiao?`生肖${d.shengxiao}`:'',d.xingzuo?`${d.xingzuo}座`:'',asText(d.jieqi||t.solar?.time?.term,''),asText(sc.day?.day||l.day_sixty_cycle||al.day_sixty_cycle,''),al.twelve_star?.ecliptic?`${asText(al.twelve_star.ecliptic)} · ${asText(al.twelve_star.ecliptic.luck)}`:'',asText(t.season?.phase||l.phase,'')]);
+      els.heroChips.innerHTML=tagHtml(values);
+    }
+    function renderStats(){
+      const d=root(),t=tyme();
+      const base=Array.isArray(t.overview?.stats)?t.overview.stats.map(x=>[x.label,x.value]):[];
+      const fallback=[['农历',d.nongli||t.overview?.lunar_text],['生肖',d.shengxiao?`生肖${d.shengxiao}`:''],['星座',d.xingzuo?`${d.xingzuo}座`:''],['节气',d.jieqi||t.solar?.time?.term],['星期',d.xingqiji?`星期${d.xingqiji}`:t.overview?.weekday],['提示',t.overview?.hero_hint]];
+      const rows=(base.length?base:fallback).filter(x=>asText(x[1],'')!=='').slice(0,8);
+      els.stats.innerHTML=rows.map(([k,v])=>`<div class="stat"><b>${esc(k)}</b><span>${esc(asText(v,''))}</span></div>`).join('');
+    }
+
+    function getCalendarCells(){
+      const m=tyme().month||{};
+      const candidates=[m.calendar_rows,m.rows,m.weeks,m.days,tyme().calendar_rows];
+      for(const c of candidates){
+        if(Array.isArray(c)&&c.length){const flat=Array.isArray(c[0])?c.flat():c;const out=flat.map(normalizeCell).filter(x=>x.ymd||x.day);if(out.length)return completeCalendar(out)}
+      }
+      return makeFallbackCalendar(state.ymd);
+    }
+    function normalizeCell(c){
+      if(!c||typeof c!=='object')return{};
+      const ymd=c.ymd||c.date||c.solar_ymd||c.solar?.ymd||c.solar?.date||c.day?.ymd;
+      const rawDay=c.solar?.day||c.day_num||(typeof c.day==='number'||typeof c.day==='string'?c.day:'')||String(c.name||'').replace(/日$/,'')||(ymd?String(ymd).slice(-2):'');
+      const day=Number(rawDay);
+      const lunar=asText(c.mini_lunar_text||c.copy?.text||c.lunar?.day_name||c.lunar?.name||c.lunar||c.lunar_text||'', '');
+      const events=[];
+      arr(c.events||c.items||c.tags||c.labels||c.festivals).forEach(x=>events.push({text:x,kind:eventKind(x)}));
+      arr(c.hint).forEach(x=>{if(x&&x!=='日值平常')events.push({text:x,kind:eventKind(x)})});
+      if(c.term) events.push({text:asText(c.term),kind:'term'});
+      if(c.festival) events.push({text:asText(c.festival),kind:'festival'});
+      if(c.legal_holiday) events.push({text:asText(c.legal_holiday),kind:'festival'});
+      return {ymd,day,lunar,inMonth:c.is_current_month??c.in_month??c.current_month??!c.muted,selected:c.is_selected??c.selected??ymd===state.ymd,today:c.is_today??c.today??ymd===todayYmd(),ganzhi:asText(c.ganzhi_day||c.sixty_cycle||'', ''),duty:asText(c.duty||'', ''),events:uniqueEvents([...events,...eventsForDay(day)])};
+    }
+    function completeCalendar(cells){
+      const {year,month}=parseYmd(state.ymd);
+      if(cells.length>=35&&cells.length%7===0)return cells;
+      const byDate=new Map(cells.map(c=>[c.ymd,c]));
+      const first=new Date(year,month-1,1),offset=(first.getDay()+6)%7,start=new Date(year,month-1,1-offset),last=new Date(year,month,0).getDate(),total=Math.ceil((offset+last)/7)*7;
+      const out=[];for(let i=0;i<total;i++){const cur=new Date(start);cur.setDate(start.getDate()+i);const ymd=fmtDate(cur);out.push(byDate.get(ymd)||{ymd,day:cur.getDate(),lunar:'',inMonth:cur.getMonth()+1===month,selected:ymd===state.ymd,today:ymd===todayYmd(),ganzhi:'',duty:'',events:eventsForDay(cur.getDate())})}return out;
+    }
+    function makeFallbackCalendar(ymd){
+      const {year,month}=parseYmd(ymd),first=new Date(year,month-1,1),offset=(first.getDay()+6)%7,start=new Date(year,month-1,1-offset),last=new Date(year,month,0).getDate(),total=Math.ceil((offset+last)/7)*7,out=[];
+      for(let i=0;i<total;i++){const cur=new Date(start);cur.setDate(start.getDate()+i);const cy=fmtDate(cur),inMonth=cur.getMonth()+1===month;out.push({ymd:cy,day:cur.getDate(),lunar:'',inMonth,selected:cy===ymd,today:cy===todayYmd(),ganzhi:'',duty:'',events:inMonth?eventsForDay(cur.getDate()):[]})}return out;
+    }
+    function eventsForDay(day){
+      const nodes=tyme().month?.nodes||{},dd=pad(day),out=[];
+      const p=parseYmd(state.ymd);
+      [['terms','term'],['festivals','festival'],['legal_holidays','festival'],['season_nodes','term']].forEach(([key,kind])=>arr(nodes[key]).forEach(line=>{
+        const raw=String(line); const s=shortEventText(raw);
+        if(raw.startsWith(`${dd}日`)||raw.startsWith(`${p.year}年${p.month}月${day}日`)) out.push({kind,text:s});
+      }));
+      return out;
+    }
+    function eventKind(t){if(/清明|谷雨|立春|雨水|惊蛰|春分|立夏|小满|芒种|夏至|小暑|大暑|立秋|处暑|白露|秋分|寒露|霜降|立冬|小雪|大雪|冬至|小寒|大寒|节气|候/.test(t))return'term';if(/忌|凶|黑道/.test(t))return'bad';return'festival'}
+    function uniqueEvents(list){const seen=new Set();return list.map(e=>typeof e==='string'?{kind:eventKind(e),text:e}:e).map(e=>({...e,text:shortEventText(e.text||e)})).filter(e=>{const k=eventKey(e.text);if(!e.text||seen.has(k))return false;seen.add(k);return true})}
+    function renderCalendar(cells){
+      const html=cells.map(c=>`<button class="day ${c.inMonth?'':'off'} ${c.selected?'sel':''} ${c.today?'now':''}" data-ymd="${esc(c.ymd||'')}"><div class="dTop"><span class="num">${esc(c.day||'')}</span>${c.today?'<span class="today">今</span>':''}</div><div class="lunar">${esc(c.lunar||'')}</div><div class="gan">${esc(uniq([c.ganzhi,c.duty]).join(' · '))}</div><div class="marks">${(c.events||[]).slice(0,3).map(e=>`<span class="mark ${esc(e.kind||'')}">${esc(shortEventText(e.text||e))}</span>`).join('')}</div></button>`).join('');
+      els.days.innerHTML=html;
+    }
+
+    function renderMonthNodes(){
+      const n=tyme().month?.nodes||{};
+      const makeItems=list=>uniqueEventTexts(list);
+      const groups=[['节气',makeItems(n.terms),'term'],['节日',makeItems(n.festivals),'festival'],['假日',makeItems(n.legal_holidays),'festival'],['节令',makeItems(n.season_nodes),'term']].filter(x=>x[1].length);
+      const groupHtml=groups.length?`<div class="nodeGroups">${groups.map(([label,items,kind])=>`<section class="nodeGroup"><div class="nodeGroupTitle"><b>${esc(label)}</b><span class="sub">${items.length}项</span></div><div class="nodeChips">${items.map(v=>`<span class="nodeChip ${kind}">${esc(v)}</span>`).join('')}</div></section>`).join('')}</div>`:'';
+      const highs=Array.isArray(n.highlights)?n.highlights:[];
+      const highHtml=highs.length?`<div class="monthHighlights">${highs.slice(0,12).map(h=>{const items=uniqueEventTexts(arr(h.items).map(x=>x.text||x));const date=String(h.date||'').padStart(2,'0');return `<article class="nodeCard"><div class="nodeCardDate">${esc(date)}日 ${esc(asText(h.weekday,''))}</div><div class="nodeCardText">${esc(items.join(' / ')||asText(h.text,''))}</div></article>`}).join('')}</div>`:'';
+      els.monthNodes.innerHTML=(groupHtml+highHtml)||'';
+      els.nodesSub.textContent=groups.length||highs.length?'节气、节日与重要日期':'';
+    }
+    function renderOverview(){
+      const d=root(),t=tyme(),solar=t.solar?.day||{},lunar=t.lunar?.day||{},festival=t.festival||{},season=t.season||{},nav=t.navigation||{};
+      els.overview.innerHTML=infoRows([['阳历',t.overview?.solar_text||solar.text||state.ymd],['农历',t.overview?.lunar_text||lunar.text||d.nongli],['星期',t.overview?.weekday||solar.weekday||(d.xingqiji?`星期${d.xingqiji}`:'')],['生肖',d.shengxiao?`生肖${d.shengxiao}`:''],['星座',d.xingzuo?`${d.xingzuo}座`:solar.constellation],['节气',season.term_day||d.jieqi||t.solar?.time?.term],['七十二候',season.phenology_day||t.solar?.time?.phenology],['节日',d.jieri||festival.solar||festival.lunar||festival.legal_holiday],['月相',season.phase||lunar.phase],['上一日',nav.previous_day?.text],['下一日',nav.next_day?.text]]);
+    }
+    function renderYiJi(){
+      const d=root(),tab=tyme().almanac?.taboo||tyme().lunar?.day?.taboo||{};
+      const yi=uniq([...arr(d.yiji?.yi),...arr(tab.recommends_text),...arr(tab.recommends),...arr(tab.yi)]);
+      const ji=uniq([...arr(d.yiji?.ji),...arr(tab.avoids_text),...arr(tab.avoids),...arr(tab.ji)]);
+      els.yi.innerHTML=tagHtml(yi,'good');els.ji.innerHTML=tagHtml(ji,'bad');
+    }
+    function renderAlmanac(){
+      const t=tyme(),l=t.lunar?.day||{},al=t.almanac||{},sc=t.sixty_cycle||{};
+      const yearCycle=l.year_sixty_cycle||t.lunar?.year_sixty_cycle||sc.year;
+      const monthCycle=l.month_sixty_cycle||t.lunar?.month_sixty_cycle||sc.month;
+      const dayCycle=l.day_sixty_cycle||al.day_sixty_cycle||sc.day?.day||sc.day;
+      const hourCycle=t.lunar?.hour?.hour_sixty_cycle||t.lunar?.hour?.hour||sc.hour?.hour||sc.hour;
+      const twelve=al.twelve_star||l.twelve_star;
+      const nine=al.nine_star||l.nine_star;
+      const star28=al.twenty_eight_star||l.twenty_eight_star;
+      els.almanac.innerHTML=infoRows([['年柱',`${asText(yearCycle,'')} ${asText(yearCycle?.sound,'')}`.trim()],['月柱',`${asText(monthCycle,'')} ${asText(monthCycle?.sound,'')}`.trim()],['日柱',`${asText(dayCycle,'')} ${asText(dayCycle?.sound,'')}`.trim()],['时柱',hourCycle],['值日',al.duty||l.duty],['黄黑道',twelve?.ecliptic?`${asText(twelve.ecliptic)} · ${asText(twelve.ecliptic.luck)}`:twelve],['十二神',twelve],['九星',`${asText(nine,'')} ${asText(nine?.direction,'')}`.trim()],['二十八宿',`${asText(star28,'')} ${asText(star28?.luck,'')}`.trim()],['胎神',al.fetus_day||l.fetus_day||l.fetus],['太岁方位',al.jupiter_direction||l.jupiter_direction],['六曜 / 小六壬',`${asText(l.six_star,'')} · ${asText(l.minor_ren,'')}`],['彭祖百忌',al.peng_zu||dayCycle?.peng_zu],['月相',t.season?.phase||l.phase]]);
+    }
+    function renderSeason(){
+      const s=tyme().season||{},solar=tyme().solar?.time||{};
+      const term=asText(s.term||solar.term,'');
+      const termDay=asText(s.term_day,'');
+      const pheno=asText(s.phenology||solar.phenology,'');
+      const phenoDay=asText(s.phenology_day,'');
+      const signals=arr(s.signals).length?arr(s.signals):arr(s.signals_text);
+      const rows=[['物候',pheno],['物候进度',phenoDay],['月相',s.phase],['数九',s.nine_day],['三伏',s.dog_day],['梅雨',s.plum_rain_day],['时令',signals.join('、')]].filter(x=>!isBlankText(asText(x[1],'')));
+      els.season.className='seasonClean';
+      if(!term&&!rows.length){els.season.innerHTML='';return}
+      const primary=`<article class="seasonPrimary"><div class="seasonLabel">当前节气</div><div class="seasonValue">${esc(term||'--')}</div>${termDay?`<div class="seasonProgress">${esc(termDay)}</div>`:''}</article>`;
+      const cards=rows.map(([k,v])=>`<article class="seasonMeta"><b>${esc(k)}</b><span>${esc(asText(v,''))}</span></article>`).join('');
+      els.season.innerHTML=`${primary}<div class="seasonMetaGrid">${cards}</div>`;
+    }
+    function renderGods(){
+      const g=tyme().almanac?.gods||tyme().lunar?.day?.gods||{},items=Array.isArray(g.items)?g.items:[];
+      const good=uniq([...arr(g.good),...arr(g.goods),...arr(g.lucky),...arr(g.good_gods),...items.filter(x=>/吉/.test(asText(x.luck,''))).map(x=>asText(x))]);
+      const bad=uniq([...arr(g.bad),...arr(g.bads),...arr(g.unlucky),...arr(g.bad_gods),...arr(g.avoid),...items.filter(x=>/凶/.test(asText(x.luck,''))).map(x=>asText(x))]);
+      els.goodGods.innerHTML=tagHtml(good,'good');els.badGods.innerHTML=tagHtml(bad,'bad');
+    }
+    function findHourIndex(){const hs=tyme().hours||[];const i=hs.findIndex(h=>h?.selected);if(i>=0)return i;const h=Number(tyme().request?.hour);const hour=Number.isFinite(h)?h:new Date().getHours();if(hour===23)return 0;return Math.max(0,Math.min(11,Math.floor((hour+1)/2)))}
+    function hourTextHtml(items,kind){
+      const text=uniq(arr(items).map(x=>asText(x,'')).filter(x=>!isBlankText(x))).join('、');
+      if(!text)return '';
+      return `<div class="hourText ${kind||''}" title="${esc(text)}">${esc(text)}</div>`;
+    }
+    function renderHours(){
+      const hs=tyme().hours||[];if(!hs.length){els.hourRows.innerHTML='';els.hourDetail.innerHTML='';return}
+      if(state.hourIndex===null)state.hourIndex=findHourIndex();
+      els.hourRows.innerHTML=hs.map((h,i)=>{const sel=i===state.hourIndex,e=h.twelve_star?.ecliptic,tab=h.taboo||{},luck=asText(e?.luck||h.luck,'');return `<tr class="${sel?'active':''}" data-hour="${i}"><td data-label="时辰"><div class="hourCell">${esc(asText(h.name||h.text,`第${i+1}时`))}</div></td><td data-label="时间">${esc(asText(h.range||h.time_range||h.time,''))}</td><td data-label="时柱">${esc(asText(h.hour||h.sixty_cycle||h.text,''))}</td><td data-label="黄黑道">${esc(e?`${asText(e)} · ${luck}`:asText(h.twelve_star||h.ecliptic,''))}</td><td data-label="九星">${esc(uniq([asText(h.nine_star,''),asText(h.minor_ren,'')]).join(' · '))}</td><td data-label="时宜">${hourTextHtml(tab.recommends_text||tab.recommends||h.recommends||h.yi,'goodText')}</td><td data-label="时忌">${hourTextHtml(tab.avoids_text||tab.avoids||h.avoids||h.ji,'badText')}</td></tr>`}).join('');
+      renderHourDetail();
+    }
+    function renderHourDetail(){
+      const h=(tyme().hours||[])[state.hourIndex];if(!h){els.hourDetail.innerHTML='';return}const e=h.twelve_star?.ecliptic,tab=h.taboo||{};
+      els.hourDetail.innerHTML=`<div class="mini"><h4>${esc(asText(h.name||h.text,''))} · ${esc(asText(h.range||h.time_range||h.time,''))}</h4><div class="infoGrid">${infoRows([['时辰',h.text],['时柱',h.hour||h.sixty_cycle],['纳音',h.hour?.sound],['黄黑道',e?`${asText(e)} · ${asText(e.luck)}`:h.twelve_star],['九星',h.nine_star],['小六壬',h.minor_ren],['时宜',arr(tab.recommends_text||tab.recommends||h.recommends||h.yi).join('、')],['时忌',arr(tab.avoids_text||tab.avoids||h.avoids||h.ji).join('、')]])}</div></div>`;
+    }
+    function historyName(t){return Number(t)===2?'出生':Number(t)===3?'逝世':'事件'}
+    function renderHistory(){
+      let rows=root().lishi||root().history||[];
+      if(state.historyType!=='all')rows=rows.filter(x=>String(x.type)===String(state.historyType));
+      const q=state.historySearch.trim().toLowerCase();if(q)rows=rows.filter(x=>`${x.year||''} ${x.month||''} ${x.day||''} ${x.data||x.text||''}`.toLowerCase().includes(q));
+      els.historySub.textContent=`${rows.length} 条记录`;els.historyList.innerHTML=rows.length?rows.map(x=>`<article class="hist"><div class="histYear">${esc(x.year||'')}</div><div><span class="badge t${esc(x.type||'')}">${historyName(x.type)}</span></div><div>${esc(x.data||x.text||'')}</div></article>`).join(''):'<span class="empty">暂无记录</span>';
+    }
+    function shiftDay(offset){const {year,month,day}=parseYmd(state.ymd);const date=new Date(year,month-1,day+offset);load(fmtDate(date))}
+    function shiftMonth(offset){const {year,month,day}=parseYmd(state.ymd);const date=new Date(year,month-1+offset,1);const last=new Date(date.getFullYear(),date.getMonth()+1,0).getDate();date.setDate(Math.min(day,last));load(fmtDate(date))}
+    function bind(){
+      els.goBtn.addEventListener('click',()=>els.dateInput.value&&load(els.dateInput.value));
+      els.dateInput.addEventListener('change',()=>els.dateInput.value&&load(els.dateInput.value));
+      els.prevDay.addEventListener('click',()=>shiftDay(-1));els.nextDay.addEventListener('click',()=>shiftDay(1));els.todayBtn.addEventListener('click',()=>load(todayYmd()));
+      els.prevMonth.addEventListener('click',()=>shiftMonth(-1));els.nextMonth.addEventListener('click',()=>shiftMonth(1));
+      els.days.addEventListener('click',e=>{const btn=e.target.closest('[data-ymd]');if(btn&&btn.dataset.ymd)load(btn.dataset.ymd)});
+      els.hourRows.addEventListener('click',e=>{const tr=e.target.closest('[data-hour]');if(!tr)return;state.hourIndex=Number(tr.dataset.hour);renderHours()});
+      els.historySearch.addEventListener('input',e=>{state.historySearch=e.target.value;renderHistory()});
+      els.historyType.addEventListener('change',e=>{state.historyType=e.target.value;renderHistory()});
+      els.copyBtn.addEventListener('click',async()=>{const txt=`${els.heroTitle.textContent}\n${els.overviewSub.textContent}`;try{await navigator.clipboard.writeText(txt);setStatus('已复制','ok');setTimeout(()=>setStatus('已更新','ok'),1200)}catch(e){setStatus('复制失败','err')}});
+      els.shareBtn.addEventListener('click',async()=>{try{if(navigator.share)await navigator.share({title:document.title,text:els.heroTitle.textContent,url:location.href});else{await navigator.clipboard.writeText(location.href);setStatus('链接已复制','ok');setTimeout(()=>setStatus('已更新','ok'),1200)}}catch(e){}});
+      document.addEventListener('keydown',e=>{if(e.target&&/input|select/i.test(e.target.tagName))return;if(e.key==='ArrowLeft')shiftDay(-1);if(e.key==='ArrowRight')shiftDay(1)})
+    }
+    bind();renderEmpty();load(state.ymd);
+  })();
+  </script>
+</body>
+</html>
